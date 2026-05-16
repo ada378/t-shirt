@@ -43,7 +43,7 @@ export default function AdminLoginPage() {
       if (result.payload?.user?.role === 'admin') {
         navigate('/admin/dashboard');
       } else {
-        setLoginError('This account is not authorized as admin. Use admin@urbanmonarch.com');
+        setLoginError('This account is not authorized as admin');
         toast.error('Admin access only');
         dispatch(logout());
       }
@@ -74,10 +74,7 @@ export default function AdminLoginPage() {
               {loading ? 'Signing in...' : 'Sign In to Admin'}
             </button>
           </form>
-          <div className="mt-4 p-3 bg-neutral-50 rounded-sm text-xs text-neutral-500">
-            <p className="font-medium mb-1">Admin Demo:</p>
-            <p>admin@urbanmonarch.com / password123</p>
-          </div>
+
         </div>
       </motion.div>
     </div>

@@ -27,7 +27,7 @@ export default function CheckoutPage() {
   }, [dispatch, user]);
 
   const subtotal = items?.reduce((sum, i) => sum + (i.price * i.quantity), 0) || 0;
-  const shippingCharge = subtotal >= 499 ? 0 : 49;
+  const shippingCharge = 0;
   const total = Math.max(0, subtotal + shippingCharge - (discount || 0));
 
   const validateAddress = () => {

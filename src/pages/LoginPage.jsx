@@ -56,10 +56,7 @@ export default function LoginPage() {
         <div className="mt-6 text-center text-sm">
           <p className="text-neutral-500">Don't have an account? <Link to="/register" className="text-black font-medium hover:underline">Create one</Link></p>
         </div>
-        <div className="mt-4 p-3 bg-neutral-50 rounded-sm text-xs text-neutral-500">
-          <p className="font-medium mb-1">Demo Credentials:</p>
-          <p>Admin: admin@urbanmonarch.com / password123</p>
-        </div>
+
       </motion.div>
     </div>
   );

@@ -20,7 +20,7 @@ export default function CartPage() {
   }, [dispatch, user]);
 
   const subtotal = items?.reduce((sum, item) => sum + (item.price * item.quantity), 0) || 0;
-  const shippingCharge = subtotal >= 499 ? 0 : 49;
+  const shippingCharge = 0;
   const total = Math.max(0, subtotal + shippingCharge - (discount || 0));
 
   const handleQuantity = (item, delta) => {
@@ -109,10 +109,6 @@ export default function CartPage() {
               )}
               <div className="border-t pt-3 flex justify-between text-base"><span className="font-semibold">Total</span><span className="font-bold">₹{total.toLocaleString()}</span></div>
             </div>
-
-            {subtotal < 499 && (
-              <p className="text-xs text-accent mt-3">Add ₹{(499 - subtotal).toLocaleString()} more for free shipping!</p>
-            )}
 
             {discount === 0 && (
               <div className="mt-4 pt-4 border-t border-neutral-100">

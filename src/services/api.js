@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'https://t-shirtbackend-1.onrender.com/api', timeout: 30000 });
+const API = axios.create({ baseURL: import.meta.env.VITE_API_URL || '/api', timeout: 30000 });
 
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem('token');
@@ -15,6 +15,9 @@ API.interceptors.response.use(
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.dispatchEvent(new Event('auth-error'));
+    }
+    if (err.response?.status === 500) {
+      console.error('Server Error:', err.response?.data?.message || err.message);
     }
     return Promise.reject(err);
   }

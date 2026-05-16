@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: '/api' });
+const API = axios.create({ baseURL: 'https://t-shirtbackend-1.onrender.com/api', timeout: 30000 });
 
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem('token');

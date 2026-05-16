@@ -57,10 +57,8 @@ export default function CheckoutPage() {
     setProcessing(true);
     try {
       if (paymentMethod === 'razorpay') {
-        // Step 1: Create Razorpay order on backend (no DB order yet)
         const { data } = await API.post('/payment/create-order', { amount: total });
 
-        // Dev mode: skip Razorpay popup, simulate payment
         if (data.devMode) {
           const orderData = { shippingAddress: address, paymentMethod: 'razorpay' };
           const order = await dispatch(createOrder(orderData)).unwrap();
@@ -73,17 +71,24 @@ export default function CheckoutPage() {
           dispatch(clearCart());
           toast.success('Payment successful! (Dev Mode) Order confirmed.');
           navigate('/orders');
-          setProcessing(false);
           return;
         }
 
-        // Step 2: Load Razorpay script
         const loaded = await loadRazorpayScript();
-        if (!loaded) { toast.error('Razorpay failed to load. Try again.'); setProcessing(false); return; }
+        if (!loaded) { toast.error('Razorpay failed to load. Try again.'); return; }
 
-        // Step 3: Open Razorpay popup — wait for payment
         await new Promise((resolve, reject) => {
-          const rzp = new window.Razorpay({
+          let settled = false;
+          let rzp = null;
+          const PAYMENT_TIMEOUT = 5 * 60 * 1000;
+          const timeoutId = setTimeout(() => {
+            if (settled) return;
+            settled = true;
+            if (rzp) rzp.close();
+            reject(new Error('timeout'));
+          }, PAYMENT_TIMEOUT);
+
+          rzp = new window.Razorpay({
             key: data.key,
             amount: data.order.amount,
             currency: data.order.currency,
@@ -93,47 +98,55 @@ export default function CheckoutPage() {
             prefill: { name: user?.name || '', email: user?.email || '', contact: address.phone || '' },
             theme: { color: '#d4a853' },
             handler: async (response) => {
+              if (settled) return;
+              settled = true;
+              clearTimeout(timeoutId);
               try {
-                // Step 4: Payment done — now create order in DB
                 const orderData = { shippingAddress: address, paymentMethod: 'razorpay' };
                 const order = await dispatch(createOrder(orderData)).unwrap();
-
-                // Step 5: Verify payment & link to order
                 await API.post('/payment/verify', {
                   razorpay_order_id: response.razorpay_order_id,
                   razorpay_payment_id: response.razorpay_payment_id,
                   razorpay_signature: response.razorpay_signature,
                   orderId: order._id,
                 });
-
                 dispatch(clearCart());
-                toast.success('Payment successful! Order confirmed. ✅');
+                toast.success('Payment successful! Order confirmed.');
                 navigate('/orders');
                 resolve();
               } catch (e) {
                 reject(new Error(e?.message || 'Order creation failed after payment'));
               }
             },
-            modal: { ondismiss: () => reject(new Error('cancelled')) },
+            modal: {
+              ondismiss: () => {
+                if (settled) return;
+                settled = true;
+                clearTimeout(timeoutId);
+                reject(new Error('cancelled'));
+              },
+            },
           });
           rzp.open();
         });
       } else {
-        // COD flow
         const orderData = { shippingAddress: address, paymentMethod: 'cod' };
         await dispatch(createOrder(orderData)).unwrap();
         dispatch(clearCart());
-        toast.success('Order placed successfully! 📦');
+        toast.success('Order placed successfully!');
         navigate('/orders');
       }
     } catch (err) {
       if (err?.message === 'cancelled') {
-        toast.error('Payment cancelled');
+        toast.error('Payment cancelled — you can try again');
+      } else if (err?.message === 'timeout') {
+        toast.error('Payment timed out. Please try again.');
       } else {
         toast.error(err?.response?.data?.message || err?.message || 'Failed to place order');
       }
+    } finally {
+      setProcessing(false);
     }
-    setProcessing(false);
   };
 
   if (!items || items.length === 0) {

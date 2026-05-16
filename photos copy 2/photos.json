@@ -1,0 +1,260 @@
+[
+  {
+    "title": "Black Men's Fashion Premium Tee",
+    "description": "A premium quality black t-shirt for men, perfect for casual and formal occasions. Made from 100% cotton for maximum comfort.",
+    "price": 1299,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 50,
+    "material": "Cotton",
+    "isNewArrival": true,
+    "isPremium": true,
+    "images": [{"url": "/uploads/black.mens.fashion_-20260511-0003.jpg.jpeg"}]
+  },
+  {
+    "title": "Black Men's Fashion Urban Hoodie",
+    "description": "Urban style hoodie with a premium finish. Perfect for layering in colder weather.",
+    "price": 2799,
+    "category": "hoodies",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 25,
+    "material": "Cotton Blend",
+    "images": [{"url": "/uploads/black.mens.fashion_-20260511-0004.jpg.jpeg"}]
+  },
+  {
+    "title": "Black Men's Fashion Slim Fit Tee",
+    "description": "Slim fit t-shirt that accentuates your physique. Made from breathable fabric for all-day comfort.",
+    "price": 1399,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 60,
+    "material": "Cotton",
+    "images": [{"url": "/uploads/black.mens.fashion_-20260511-0005.jpg.jpeg"}]
+  },
+  {
+    "title": "Black Men's Fashion Graphic Tee",
+    "description": "Bold graphic t-shirt that makes a statement. Features unique prints and high-quality fabric.",
+    "price": 1599,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 35,
+    "material": "Cotton",
+    "images": [{"url": "/uploads/black.mens.fashion_-20260511-0006.jpg.jpeg"}]
+  },
+  {
+    "title": "Black Men's Fashion Premium Hoodie",
+    "description": "Premium heavyweight hoodie with embroidered detailing. Built to last with reinforced stitching.",
+    "price": 2999,
+    "category": "hoodies",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 20,
+    "material": "Cotton Blend",
+    "isPremium": true,
+    "images": [{"url": "/uploads/black.mens.fashion_-20260511-0007.jpg.jpeg"}]
+  },
+  {
+    "title": "Bozarro Lifestyle Signature Tee",
+    "description": "Signature t-shirt from Bozarro Lifestyle. Crafted for those who appreciate quality and style.",
+    "price": 1499,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 40,
+    "material": "Cotton",
+    "isFeatured": true,
+    "images": [{"url": "/uploads/bozarro_lifestyle-20260511-0001.jpg.jpeg"}]
+  },
+  {
+    "title": "Bozarro Lifestyle Street Hoodie",
+    "description": "Street-ready hoodie with a contemporary design. Perfect for the urban lifestyle.",
+    "price": 2699,
+    "category": "hoodies",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 20,
+    "material": "Cotton Blend",
+    "isPremium": true,
+    "images": [{"url": "/uploads/bozarro_lifestyle-20260511-0002.jpg.jpeg"}]
+  },
+  {
+    "title": "Bozarro Lifestyle Minimal Tee",
+    "description": "Minimalist design t-shirt for everyday wear. Clean lines and superior comfort.",
+    "price": 1299,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 55,
+    "material": "Cotton",
+    "isNewArrival": true,
+    "images": [{"url": "/uploads/bozarro_lifestyle-20260511-0003.jpg.jpeg"}]
+  },
+  {
+    "title": "Bozarro Lifestyle Premium Tee",
+    "description": "Premium quality t-shirt with a perfect balance of style and comfort.",
+    "price": 1599,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 35,
+    "material": "Cotton",
+    "images": [{"url": "/uploads/bozarro_lifestyle-20260511-0004.jpg.jpeg"}]
+  },
+  {
+    "title": "Estilo Fitzz Casual Tee",
+    "description": "Casual t-shirt with a stylish edge. Designed for daily wear with maximum comfort.",
+    "price": 999,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 70,
+    "material": "Cotton",
+    "isNewArrival": true,
+    "images": [{"url": "/uploads/estilofitzz-20260511-0001.jpg.jpeg"}]
+  },
+  {
+    "title": "Estilo Fitzz Urban Tee",
+    "description": "Urban-inspired t-shirt with modern aesthetics. Stand out from the crowd.",
+    "price": 1199,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 65,
+    "material": "Cotton",
+    "images": [{"url": "/uploads/estilofitzz-20260511-0002.jpg.jpeg"}]
+  },
+  {
+    "title": "Estilo Fitzz Fashion Hoodie",
+    "description": "Fashion-forward hoodie for the style-conscious. Warm, comfortable, and trendy.",
+    "price": 2299,
+    "category": "hoodies",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 25,
+    "material": "Cotton Blend",
+    "isBestSeller": true,
+    "isPremium": true,
+    "images": [{"url": "/uploads/estilofitzz-20260511-0003.jpg.jpeg"}]
+  },
+  {
+    "title": "Estilo Fitzz Street Tee",
+    "description": "Street style t-shirt designed for comfort and expression. Premium cotton fabric.",
+    "price": 1099,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 50,
+    "material": "Cotton",
+    "images": [{"url": "/uploads/estilofitzz-20260511-0004.jpg.jpeg"}]
+  },
+  {
+    "title": "Estilo Fitzz Classic Fit Tee",
+    "description": "Classic fit t-shirt that never goes out of style. A wardrobe essential.",
+    "price": 899,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 80,
+    "material": "Cotton",
+    "images": [{"url": "/uploads/estilofitzz-20260511-0005.jpg.jpeg"}]
+  },
+  {
+    "title": "Estilo Fitzz Printed Hoodie",
+    "description": "Printed hoodie with unique artwork. Express your personality through fashion.",
+    "price": 2599,
+    "category": "hoodies",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 20,
+    "material": "Cotton Blend",
+    "images": [{"url": "/uploads/estilofitzz-20260511-0006.jpg.jpeg"}]
+  },
+  {
+    "title": "Estilo Fitzz Essential Tee",
+    "description": "Essential everyday t-shirt. Soft, breathable, and built to last.",
+    "price": 799,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 100,
+    "material": "Cotton",
+    "images": [{"url": "/uploads/estilofitzz-20260511-0007.jpg.jpeg"}]
+  },
+  {
+    "title": "Estilo Fitzz Limited Edition Tee",
+    "description": "Limited edition t-shirt with exclusive design. Grab yours before they sell out.",
+    "price": 1399,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 30,
+    "material": "Cotton",
+    "isFeatured": true,
+    "isPremium": true,
+    "images": [{"url": "/uploads/estilofitzz-20260511-0008.jpg.jpeg"}]
+  },
+  {
+    "title": "L'Homme Men Store Signature Tee",
+    "description": "Signature piece from L'Homme Men Store. Exquisite craftsmanship and premium materials.",
+    "price": 1799,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 30,
+    "material": "Cotton",
+    "isFeatured": true,
+    "isBestSeller": true,
+    "images": [{"url": "/uploads/lhommemenstore-20260511-0001.jpg.jpeg"}]
+  },
+  {
+    "title": "L'Homme Men Store Premium Hoodie",
+    "description": "Premium hoodie from L'Homme Men Store. Luxurious fabric with attention to detail.",
+    "price": 3299,
+    "category": "hoodies",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 15,
+    "material": "Cotton Blend",
+    "isBestSeller": true,
+    "isPremium": true,
+    "images": [{"url": "/uploads/lhommemenstore-20260511-0003.jpg.jpeg"}]
+  },
+  {
+    "title": "Nishant Clothing Classic Tee",
+    "description": "Classic t-shirt by Nishant Clothing. Timeless design meets modern comfort.",
+    "price": 1199,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 50,
+    "material": "Cotton",
+    "isNewArrival": true,
+    "images": [{"url": "/uploads/nishantclothing13-20260511-0001.jpg.jpeg"}]
+  },
+  {
+    "title": "Nishant Clothing Street Hoodie",
+    "description": "Street-ready hoodie by Nishant Clothing. Designed for the modern wardrobe.",
+    "price": 2399,
+    "category": "hoodies",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 20,
+    "material": "Cotton Blend",
+    "images": [{"url": "/uploads/nishantclothing13-20260511-0002.jpg.jpeg"}]
+  },
+  {
+    "title": "Nishant Clothing Essential Hoodie",
+    "description": "Essential hoodie with a relaxed fit. Perfect for casual outings and lounging.",
+    "price": 2199,
+    "category": "hoodies",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 25,
+    "material": "Cotton Blend",
+    "images": [{"url": "/uploads/nishantclothing13-20260511-0003.jpg.jpeg"}]
+  },
+  {
+    "title": "Nishant Clothing Graphic Tee",
+    "description": "Eye-catching graphic tee by Nishant Clothing. Bold designs for bold personalities.",
+    "price": 1299,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 45,
+    "material": "Cotton",
+    "images": [{"url": "/uploads/nishantclothing13-20260511-0004.jpg.jpeg"}]
+  },
+  {
+    "title": "Nishant Clothing Premium Tee",
+    "description": "Premium quality t-shirt with superior finishing. A staple piece for any wardrobe.",
+    "price": 1499,
+    "category": "t-shirts",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "stock": 40,
+    "material": "Cotton",
+    "isFeatured": true,
+    "isPremium": true,
+    "images": [{"url": "/uploads/nishantclothing13-20260511-0005.jpg.jpeg"}]
+  }
+]

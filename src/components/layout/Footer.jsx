@@ -43,9 +43,9 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Get In Touch</h4>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3 text-sm"><FiMapPin className="mt-0.5 text-accent flex-shrink-0" /> 123 Fashion Street, Mumbai, India</li>
-              <li className="flex items-center gap-3 text-sm"><FiPhone className="text-accent flex-shrink-0" /> +91 98765 43210</li>
-              <li className="flex items-center gap-3 text-sm"><FiMail className="text-accent flex-shrink-0" /> hello@urbanmonarch.com</li>
+              <li className="flex items-start gap-3 text-sm"><FiMapPin className="mt-0.5 text-accent flex-shrink-0" /> 16/1033,Indiranagar Lucknow, India</li>
+              <li className="flex items-center gap-3 text-sm"><FiPhone className="text-accent flex-shrink-0" /> +91 7355735325</li>
+              <li className="flex items-center gap-3 text-sm"><FiMail className="text-accent flex-shrink-0" /> support@urbanmonarch.in</li>
             </ul>
             <div className="mt-6">
               <p className="text-sm text-neutral-400 mb-2">Subscribe to our newsletter</p>

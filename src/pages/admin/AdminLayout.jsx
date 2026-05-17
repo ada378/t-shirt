@@ -1,7 +1,9 @@
+import { useState, useEffect, useCallback } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../features/auth/authSlice';
-import { FiGrid, FiPackage, FiShoppingBag, FiUsers, FiPercent, FiTrendingUp, FiLogOut, FiArrowLeft } from 'react-icons/fi';
+import API from '../../services/api';
+import { FiGrid, FiPackage, FiShoppingBag, FiUsers, FiPercent, FiTrendingUp, FiLogOut, FiArrowLeft, FiBell } from 'react-icons/fi';
 
 const sidebarLinks = [
   { to: '/admin/dashboard', icon: FiGrid, label: 'Dashboard' },
@@ -15,6 +17,38 @@ const sidebarLinks = [
 export default function AdminLayout() {
   const location = useLocation();
   const dispatch = useDispatch();
+  const [newOrdersCount, setNewOrdersCount] = useState(0);
+
+  const checkNewOrders = useCallback(async () => {
+    try {
+      const lastCheck = localStorage.getItem('adminLastOrderCheck') || new Date(0).toISOString();
+      const res = await API.get(`/admin/orders/new?since=${lastCheck}`);
+      if (res.data.success && res.data.count > 0) {
+        setNewOrdersCount((prev) => prev + res.data.count);
+        if (Notification.permission === 'granted') {
+          new Notification('New Order Received!', {
+            body: `${res.data.count} new order${res.data.count > 1 ? 's' : ''} placed`,
+            icon: '/favicon.ico'
+          });
+        }
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    if (Notification.permission === 'default') Notification.requestPermission();
+  }, []);
+
+  useEffect(() => {
+    checkNewOrders();
+    const interval = setInterval(checkNewOrders, 30000);
+    return () => clearInterval(interval);
+  }, [checkNewOrders]);
+
+  useEffect(() => {
+    localStorage.setItem('adminLastOrderCheck', new Date().toISOString());
+    setNewOrdersCount(0);
+  }, [location.pathname]);
 
   return (
     <div className="min-h-screen flex bg-neutral-50">
@@ -32,6 +66,11 @@ export default function AdminLayout() {
             >
               <link.icon className="text-base" />
               {link.label}
+              {link.to === '/admin/orders' && newOrdersCount > 0 && (
+                <span className="ml-auto bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                  {newOrdersCount}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
@@ -53,6 +92,9 @@ export default function AdminLayout() {
               {sidebarLinks.map((link) => (
                 <Link key={link.to} to={link.to} className={`p-2 rounded-sm ${location.pathname === link.to ? 'bg-black text-white' : 'text-neutral-600'}`}>
                   <link.icon className="text-sm" />
+                  {link.to === '/admin/orders' && newOrdersCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full">{newOrdersCount}</span>
+                  )}
                 </Link>
               ))}
             </div>

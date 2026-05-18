@@ -65,8 +65,8 @@
 .hero-slider .slick-dots li.slick-active button:before { opacity: 1; color: #d4a853; }
 
 .hero-section { height: 100svh; min-height: 500px; max-height: 720px; }
-@media (max-width: 640px) { .hero-section { height: 100svh; min-height: 480px; max-height: 600px; } }
-@media (min-width: 768px) { .hero-section { height: 80vh; min-height: 520px; max-height: 620px; } }
+@media (max-width: 640px) { .hero-section { height: 70svh; min-height: 360px; max-height: 520px; } }
+@media (min-width: 768px) { .hero-section { height: 78vh; min-height: 520px; max-height: 620px; } }
 
 .product-card { transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); background-color: #141414 !important; border: 1px solid #1e1e1e; }
 .product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.6); border-color: rgba(212,168,83,0.2) !important; }

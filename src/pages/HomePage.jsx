@@ -91,6 +91,41 @@ export default function HomePage() {
       {/* HERO */}
       <HeroSlider />
 
+      {/* MOBILE QUICK PICKS */}
+      {featured?.length > 0 && !loading && (
+        <section className="sm:hidden bg-[#111] border-b border-[#1a1a1a] py-6">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.25em] text-[#d4a853]">Premium Picks</p>
+                <h2 className="text-xl font-black text-white">Shop Best T-Shirts Now</h2>
+              </div>
+              <Link to="/products/t-shirts" className="text-xs uppercase tracking-[0.2em] text-[#d4a853] font-semibold">
+                View All
+              </Link>
+            </div>
+            <div className="flex gap-3 overflow-x-auto pb-2">
+              {featured.slice(0, 3).map((product) => (
+                <Link key={product._id} to={`/product/${product._id}`} className="min-w-[210px] rounded-3xl overflow-hidden border border-white/10 bg-[#111] shadow-lg">
+                  <div className="aspect-[4/5] overflow-hidden bg-neutral-900">
+                    <img
+                      src={product.images?.[0]?.url || 'https://via.placeholder.com/400x500'}
+                      alt={product.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="p-3">
+                    <p className="text-[9px] uppercase tracking-[0.3em] text-[#d4a853]">{product.category}</p>
+                    <h3 className="text-sm font-semibold text-white leading-5 truncate">{product.title}</h3>
+                    <p className="text-xs text-neutral-400 mt-2">₹{(product.discountPrice || product.price).toLocaleString()}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* MARQUEE */}
       <div className="overflow-hidden py-2" style={{ background: '#d4a853' }}>
         <motion.div animate={{ x: ['0%', '-50%'] }} transition={{ duration: 22, repeat: Infinity, ease: 'linear' }} className="flex whitespace-nowrap">
@@ -101,6 +136,43 @@ export default function HomePage() {
           ))}
         </motion.div>
       </div>
+
+      {/* PREMIUM T-SHIRTS */}
+      {(loading || featured?.length > 0) && (
+        <section className="py-10 md:py-20" style={{ background: '#0d0d0d' }}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionHeader label="Premium Picks" title="Premium T-Shirts" link="/products" />
+            {loading ? <ProductSkeleton /> : (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+                {featured?.slice(0, 8).map((p, i) => <ProductCard key={p._id} product={p} index={i} />)}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* NEW ARRIVALS */}
+      {(loading || newArrivals?.length > 0) && (
+        <section className="py-10 md:py-20" style={{ background: '#0d0d0d' }}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionHeader label="New Arrivals" title="Fresh Drops" link="/products?sort=newest" />
+            {loading ? <ProductSkeleton /> : (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+                {newArrivals?.slice(0, 8).map((p, i) => <ProductCard key={p._id} product={p} index={i} />)}
+              </div>
+            )}
+            <div className="text-center mt-6 md:mt-10">
+              <Link to="/products?sort=newest"
+                className="inline-flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-[0.15em] px-6 md:px-10 py-3 md:py-4 transition-all duration-300"
+                style={{ border: '1px solid #d4a853', color: '#d4a853' }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#d4a853'; e.currentTarget.style.color = '#000'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#d4a853'; }}>
+                View All <FiArrowRight />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* FEATURES */}
       <section style={{ background: '#111', borderBottom: '1px solid #1e1e1e' }}>
@@ -157,29 +229,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* NEW ARRIVALS */}
-      {(loading || newArrivals?.length > 0) && (
-        <section className="py-10 md:py-20" style={{ background: '#0d0d0d' }}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader label="New Arrivals" title="Fresh Drops" link="/products?sort=newest" />
-            {loading ? <ProductSkeleton /> : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-                {newArrivals?.slice(0, 8).map((p, i) => <ProductCard key={p._id} product={p} index={i} />)}
-              </div>
-            )}
-            <div className="text-center mt-6 md:mt-10">
-              <Link to="/products?sort=newest"
-                className="inline-flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-[0.15em] px-6 md:px-10 py-3 md:py-4 transition-all duration-300"
-                style={{ border: '1px solid #d4a853', color: '#d4a853' }}
-                onMouseEnter={e => { e.currentTarget.style.background = '#d4a853'; e.currentTarget.style.color = '#000'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#d4a853'; }}>
-                View All <FiArrowRight />
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* SALE BANNER */}
       <section style={{ background: '#0a0a0a' }}>
@@ -246,20 +295,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* FEATURED */}
-      {(loading || featured?.length > 0) && (
-        <section className="py-10 md:py-20" style={{ background: '#0d0d0d' }}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader label="Featured" title="Editor's Pick" link="/products" />
-            {loading ? <ProductSkeleton /> : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-                {featured?.slice(0, 8).map((p, i) => <ProductCard key={p._id} product={p} index={i} />)}
-              </div>
-            )}
-          </div>
-        </section>
-      )}
 
       {/* REVIEWS */}
       <section className="py-10 md:py-20" style={{ background: '#0a0a0a' }}>

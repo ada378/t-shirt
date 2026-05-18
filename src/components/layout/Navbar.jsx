@@ -12,20 +12,16 @@ import logo from '../../../photos/logo.jpeg';
 
 const categories = [
   { name: 'T-Shirts', path: '/products/t-shirts', icon: '👕' },
-  { name: 'Hoodies', path: '/products/hoodies', icon: '🧥' },
-  { name: 'Jeans', path: '/products/jeans', icon: '👖' },
   { name: 'New Arrivals', path: '/products?sort=newest', icon: '✨' },
   { name: 'Best Sellers', path: '/products?sort=bestseller', icon: '🔥' },
-  { name: 'Sale', path: '/products?sort=discount', icon: '🏷️' },
+  { name: 'Sale', path: '/products/t-shirts', icon: '🏷️' },
 ];
 
 const navLinks = [
   { name: 'Home', path: '/' },
   { name: 'T-Shirts', path: '/products/t-shirts' },
-  { name: 'Hoodies', path: '/products/hoodies' },
-  { name: 'Jeans', path: '/products/jeans' },
   { name: 'New Arrivals', path: '/products?sort=newest' },
-  { name: 'Sale', path: '/products?sort=discount' },
+  { name: 'Sale', path: '/products/t-shirts' },
   { name: 'About', path: '/about' },
 ];
 
@@ -84,14 +80,6 @@ export default function Navbar() {
         <div className="max-w-[1400px] mx-auto px-3 sm:px-6">
           <div className="flex items-center gap-2 md:gap-4 h-[60px]">
 
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 text-white hover:bg-white/10 rounded transition-colors flex-shrink-0"
-            >
-              {isOpen ? <FiX className="text-xl" /> : <FiMenu className="text-xl" />}
-            </button>
-
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0 group">
               <img src={logo} alt="Urban Monarch" className="h-11 w-11 rounded-full object-cover ring-2 ring-[#d4a853]/40 group-hover:ring-[#d4a853] transition-all" />
@@ -100,6 +88,30 @@ export default function Navbar() {
                 <p className="text-[#d4a853] font-bold text-sm leading-tight tracking-widest">MONARCH</p>
               </div>
             </Link>
+
+            {/* Mobile search */}
+            <div className="flex-1 md:hidden">
+              <form onSubmit={handleSearch} className="flex rounded-full overflow-hidden border border-white/10 bg-white shadow-sm">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search tees"
+                  className="flex-1 px-3 py-2 text-sm focus:outline-none"
+                />
+                <button type="submit" className="px-3 bg-[#d4a853] text-black">
+                  <FiSearch />
+                </button>
+              </form>
+            </div>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden p-2 text-white hover:bg-white/10 rounded transition-colors flex-shrink-0"
+            >
+              {isOpen ? <FiX className="text-xl" /> : <FiMenu className="text-xl" />}
+            </button>
 
             {/* Delivery location - desktop */}
             <div className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 hover:bg-white/10 rounded cursor-pointer transition-colors flex-shrink-0 border border-transparent hover:border-white/20">
@@ -140,7 +152,7 @@ export default function Navbar() {
             </form>
 
             {/* Right icons */}
-            <div className="flex items-center gap-1 ml-auto md:ml-0">
+            <div className="hidden md:flex items-center gap-1 ml-auto md:ml-0">
 
               {/* Account */}
               {user ? (
@@ -239,22 +251,77 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile search */}
-          <div className="md:hidden pb-2.5">
-            <form onSubmit={handleSearch} className="flex rounded-md overflow-hidden">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search products..."
-                className="flex-1 px-4 py-2.5 text-sm focus:outline-none"
-                style={{ background: '#fff', color: '#111' }}
-              />
-              <button type="submit" className="px-4 bg-[#d4a853] text-black">
-                <FiSearch />
-              </button>
-            </form>
-          </div>
+          {/* Mobile menu overlay */}
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm md:hidden"
+                onClick={() => setIsOpen(false)}
+              >
+                <motion.div
+                  initial={{ x: '-100%' }}
+                  animate={{ x: 0 }}
+                  exit={{ x: '-100%' }}
+                  transition={{ duration: 0.25 }}
+                  className="h-full w-[88vw] max-w-xs bg-[#111] shadow-2xl"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+                    <div>
+                      <p className="text-xs font-semibold text-white">Menu</p>
+                      <p className="text-[10px] text-neutral-400">Quick access to categories</p>
+                    </div>
+                    <button className="p-2 text-white hover:bg-white/10 rounded" onClick={() => setIsOpen(false)}>
+                      <FiX className="text-xl" />
+                    </button>
+                  </div>
+                  <div className="px-5 py-4 space-y-4">
+                    <div className="space-y-2">
+                      {navLinks.map((link) => (
+                        <Link
+                          key={link.name}
+                          to={link.path}
+                          onClick={() => setIsOpen(false)}
+                          className="block rounded-xl px-4 py-3 text-sm font-semibold text-white hover:bg-white/5 transition-colors"
+                        >
+                          {link.name}
+                        </Link>
+                      ))}
+                    </div>
+                    <div className="border-t border-white/10 pt-4 space-y-2">
+                      <p className="text-xs uppercase tracking-[0.3em] text-[#d4a853]">Your account</p>
+                      {user ? (
+                        <>
+                          <Link to="/orders" onClick={() => setIsOpen(false)} className="block rounded-xl px-4 py-3 text-sm text-white hover:bg-white/5 transition-colors">Orders</Link>
+                          <Link to="/wishlist" onClick={() => setIsOpen(false)} className="block rounded-xl px-4 py-3 text-sm text-white hover:bg-white/5 transition-colors">Wishlist</Link>
+                          {user.role === 'admin' && (
+                            <Link to="/admin" onClick={() => setIsOpen(false)} className="block rounded-xl px-4 py-3 text-sm text-white hover:bg-white/5 transition-colors">Admin</Link>
+                          )}
+                          <button
+                            onClick={() => { handleLogout(); setIsOpen(false); }}
+                            className="w-full text-left rounded-xl px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+                          >
+                            Sign Out
+                          </button>
+                        </>
+                      ) : (
+                        <Link to="/login" onClick={() => setIsOpen(false)} className="block rounded-xl px-4 py-3 text-sm text-white hover:bg-white/5 transition-colors">Sign In</Link>
+                      )}
+                    </div>
+                    <div className="border-t border-white/10 pt-4">
+                      <p className="text-xs uppercase tracking-[0.3em] text-[#d4a853]">Quick links</p>
+                      <Link to="/cart" onClick={() => setIsOpen(false)} className="block rounded-xl px-4 py-3 text-sm text-white hover:bg-white/5 transition-colors">My Cart ({cartCount})</Link>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
         </div>
       </div>
 
@@ -332,72 +399,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden overflow-hidden shadow-2xl"
-            style={{ background: '#1a1a1a', borderTop: '1px solid #2a2a2a' }}
-          >
-            <div className="px-4 py-4 space-y-1">
-              {!user ? (
-                <div className="pb-4 mb-4 border-b" style={{ borderColor: '#2a2a2a' }}>
-                  <Link to="/login" className="block w-full text-center py-3 bg-[#d4a853] text-black text-sm font-bold rounded-sm hover:bg-[#c49843] transition-colors" onClick={() => setIsOpen(false)}>
-                    Sign In
-                  </Link>
-                  <Link to="/register" className="block w-full text-center py-3 mt-2 text-sm font-medium text-white border border-white/20 rounded-sm hover:bg-white/5 transition-colors" onClick={() => setIsOpen(false)}>
-                    Create Account
-                  </Link>
-                </div>
-              ) : (
-                <div className="pb-4 mb-4 border-b" style={{ borderColor: '#2a2a2a' }}>
-                  <p className="text-sm font-semibold text-white">{user.name}</p>
-                  <p className="text-xs text-neutral-400">{user.email}</p>
-                </div>
-              )}
-
-              {categories.map((cat) => (
-                <Link
-                  key={cat.path}
-                  to={cat.path}
-                  className="flex items-center gap-3 py-2.5 text-sm text-neutral-300 hover:text-white transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <span>{cat.icon}</span> {cat.name}
-                </Link>
-              ))}
-
-              <div className="pt-4 mt-4 border-t space-y-1" style={{ borderColor: '#2a2a2a' }}>
-                <Link to="/wishlist" className="flex items-center gap-3 py-2.5 text-sm text-neutral-300 hover:text-white transition-colors" onClick={() => setIsOpen(false)}>
-                  <FiHeart className="text-[#d4a853]" /> Wishlist {wishlistCount > 0 && `(${wishlistCount})`}
-                </Link>
-                {user && (
-                  <>
-                    <Link to="/orders" className="flex items-center gap-3 py-2.5 text-sm text-neutral-300 hover:text-white transition-colors" onClick={() => setIsOpen(false)}>
-                      <FiPackage className="text-[#d4a853]" /> My Orders
-                    </Link>
-                    {user.role === 'admin' && (
-                      <Link to="/admin" className="flex items-center gap-3 py-2.5 text-sm text-neutral-300 hover:text-white transition-colors" onClick={() => setIsOpen(false)}>
-                        <span className="text-[#d4a853]">⚙️</span> Admin Panel
-                      </Link>
-                    )}
-                    <button
-                      onClick={() => { handleLogout(); setIsOpen(false); }}
-                      className="flex items-center gap-3 py-2.5 text-sm text-red-400 w-full text-left"
-                    >
-                      <FiLogOut /> Sign Out
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </nav>
   );
 }

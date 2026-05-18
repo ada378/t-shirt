@@ -123,6 +123,13 @@ export default function HeroSlider() {
                   {s.btn2}
                 </Link>
               </div>
+              <div className="mt-4 sm:hidden">
+                <Link to="/products/t-shirts"
+                  className="inline-flex items-center justify-center w-full rounded-full bg-white text-black py-3 text-sm font-bold uppercase tracking-[0.12em]"
+                >
+                  Explore Premium T-Shirts
+                </Link>
+              </div>
             </motion.div>
           </AnimatePresence>
         </div>

@@ -26,6 +26,8 @@ export default function AdminProducts() {
   const [showBulkModal, setShowBulkModal] = useState(false);
   const [bulkJson, setBulkJson] = useState('');
   const [bulkImporting, setBulkImporting] = useState(false);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [confirmDeleteLoading, setConfirmDeleteLoading] = useState(false);
 
   useEffect(() => { dispatch(fetchAdminProducts()); }, [dispatch]);
 
@@ -133,15 +135,22 @@ export default function AdminProducts() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Delete this product?')) {
-      try {
-        await dispatch(deleteProductAdmin(id)).unwrap();
-        toast.success('Product deleted');
-        dispatch(fetchAdminProducts());
-      } catch (err) {
-        toast.error(typeof err === 'string' ? err : err?.message || 'Failed to delete');
-      }
+  const handleDelete = (id) => {
+    setConfirmDeleteId(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!confirmDeleteId) return;
+    setConfirmDeleteLoading(true);
+    try {
+      await dispatch(deleteProductAdmin(confirmDeleteId)).unwrap();
+      toast.success('Product deleted');
+      dispatch(fetchAdminProducts());
+      setConfirmDeleteId(null);
+    } catch (err) {
+      toast.error(typeof err === 'string' ? err : err?.message || 'Failed to delete');
+    } finally {
+      setConfirmDeleteLoading(false);
     }
   };
 
@@ -322,6 +331,23 @@ export default function AdminProducts() {
                 <button type="submit" className="btn-primary text-sm">Save Product</button>
               </div>
             </form>
+          </motion.div>
+        </div>
+      )}
+
+      {confirmDeleteId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="bg-white w-full max-w-md rounded-lg shadow-2xl overflow-hidden">
+            <div className="p-6">
+              <h3 className="text-lg font-semibold mb-3">Confirm Delete</h3>
+              <p className="text-sm text-neutral-600 mb-6">Are you sure you want to delete this product? This action cannot be undone.</p>
+              <div className="flex justify-end gap-3">
+                <button type="button" onClick={() => setConfirmDeleteId(null)} className="btn-outline text-sm">Cancel</button>
+                <button type="button" onClick={confirmDelete} disabled={confirmDeleteLoading} className="btn-primary text-sm">
+                  {confirmDeleteLoading ? 'Deleting...' : 'Delete'}
+                </button>
+              </div>
+            </div>
           </motion.div>
         </div>
       )}

@@ -51,7 +51,7 @@ export default function WishlistPage() {
           <motion.div key={product._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="group">
             <Link to={`/product/${product._id}`} className="block">
               <div className="aspect-[3/4] overflow-hidden bg-neutral-100">
-                <img src={product.images?.[0]?.url || 'https://via.placeholder.com/300'} alt={product.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img loading="lazy" src={product.images?.[0]?.url || 'https://via.placeholder.com/300'} alt={product.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="p-3">
                 <h3 className="text-sm font-medium truncate">{product.title}</h3>

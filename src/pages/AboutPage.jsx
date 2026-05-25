@@ -29,7 +29,7 @@ export default function AboutPage() {
             <p className="text-neutral-600 leading-relaxed">Our journey began in 2020 with a simple mission: make premium streetwear accessible without compromising on quality or style. Today, we're proud to serve thousands of customers across India.</p>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="aspect-[4/5] bg-neutral-100 overflow-hidden rounded-sm">
-            <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&q=80" alt="About Urban Monarch" className="w-full h-full object-cover" />
+            <img loading="lazy" src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&q=80" alt="About Urban Monarch" className="w-full h-full object-cover" />
           </motion.div>
         </div>
 
@@ -56,7 +56,7 @@ export default function AboutPage() {
           {team.map((member, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="text-center group">
               <div className="aspect-square overflow-hidden bg-neutral-100 rounded-sm mb-4">
-                <img src={member.image} alt={member.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img loading="lazy" src={member.image} alt={member.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <h3 className="font-semibold text-lg">{member.name}</h3>
               <p className="text-sm text-neutral-500">{member.role}</p>

@@ -69,7 +69,8 @@ export default function AdminProducts() {
       const formData = new FormData();
       formData.append('images', file);
       const res = await API.post('/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 60000,
       });
       if (res.data.success && res.data.files.length > 0) {
         const imgs = [...form.images];
@@ -187,7 +188,7 @@ export default function AdminProducts() {
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-12 bg-neutral-100 overflow-hidden flex-shrink-0">
-                        <img src={p.images?.[0]?.url || ''} alt="" className="w-full h-full object-cover" />
+                        <img loading="lazy" src={p.images?.[0]?.url || ''} alt="" className="w-full h-full object-cover" />
                       </div>
                       <span className="font-medium truncate max-w-[200px]">{p.title}</span>
                     </div>
@@ -295,7 +296,7 @@ export default function AdminProducts() {
                             <div className="w-full h-full flex items-center justify-center text-neutral-400 text-xs">Uploading...</div>
                           ) : img.url ? (
                             <div className="w-full h-full relative">
-                              <img src={img.url} alt="" className="w-full h-full object-cover" />
+                              <img loading="lazy" src={img.url} alt="" className="w-full h-full object-cover" />
                               <div className="absolute inset-0 bg-black/0 hover:bg-black/30 transition-colors flex items-center justify-center">
                                 <FiUpload className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-lg" />
                               </div>

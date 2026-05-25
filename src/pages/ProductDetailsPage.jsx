@@ -9,6 +9,7 @@ import Loader from '../components/common/Loader';
 import { FiHeart, FiShare2, FiMinus, FiPlus, FiTruck, FiShield, FiRefreshCw, FiStar } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
+
 export default function ProductDetailsPage() {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -20,9 +21,11 @@ export default function ProductDetailsPage() {
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
+  const [mainImgLoaded, setMainImgLoaded] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProduct(id));
+    window.scrollTo(0, 0);
     return () => dispatch(clearProduct());
   }, [dispatch, id]);
 
@@ -72,11 +75,20 @@ export default function ProductDetailsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-          <div className="aspect-[1/1] overflow-hidden bg-neutral-100 mb-4 max-w-md mx-auto">
+          <div className="aspect-[1/1] overflow-hidden bg-neutral-100 mb-4 max-w-md mx-auto relative">
+            {!mainImgLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center bg-neutral-100 z-10">
+                <span className="w-8 h-8 border-2 border-neutral-300 border-t-neutral-600 rounded-full animate-spin" />
+              </div>
+            )}
             <img
               src={validImages[activeImg]?.url || 'https://via.placeholder.com/600x750/f5f5f5/999?text=Product'}
               alt={product.title}
-              className="w-full h-full object-cover"
+              onLoad={() => setMainImgLoaded(true)}
+              onError={() => setMainImgLoaded(true)}
+              className={`w-full h-full object-cover transition-opacity duration-500 ${mainImgLoaded ? 'opacity-100' : 'opacity-0'}`}
+              loading="lazy"
+              decoding="async"
             />
           </div>
           {validImages.length > 1 && (
@@ -87,7 +99,7 @@ export default function ProductDetailsPage() {
                   onClick={() => setActiveImg(i)}
                   className={`w-20 h-20 flex-shrink-0 border-2 overflow-hidden ${activeImg === i ? 'border-black' : 'border-transparent'}`}
                 >
-                  <img src={img.url} alt="" className="w-full h-full object-cover" />
+                  <img loading="lazy" src={img.url} alt="" className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>

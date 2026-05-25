@@ -52,7 +52,9 @@ const productSlice = createSlice({
       .addCase(fetchProducts.pending, (state) => { state.loading = true; state.error = null; })
       .addCase(fetchProducts.fulfilled, (state, action) => { state.loading = false; state.products = action.payload.products; state.pagination = action.payload.pagination; })
       .addCase(fetchProducts.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
-      .addCase(fetchFeaturedProducts.fulfilled, (state, action) => { state.featured = action.payload.featured; state.bestSellers = action.payload.bestSellers; state.newArrivals = action.payload.newArrivals; state.premium = action.payload.premium; })
+      .addCase(fetchFeaturedProducts.pending, (state) => { state.loading = true; })
+      .addCase(fetchFeaturedProducts.fulfilled, (state, action) => { state.loading = false; state.featured = action.payload.featured || []; state.bestSellers = action.payload.bestSellers || []; state.newArrivals = action.payload.newArrivals || []; state.premium = action.payload.premium || []; })
+      .addCase(fetchFeaturedProducts.rejected, (state) => { state.loading = false; })
       .addCase(fetchProduct.pending, (state) => { state.loading = true; })
       .addCase(fetchProduct.fulfilled, (state, action) => { state.loading = false; state.product = action.payload; })
       .addCase(fetchProduct.rejected, (state, action) => { state.loading = false; state.error = action.payload; });

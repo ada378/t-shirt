@@ -108,7 +108,7 @@ export default function AdminOrders() {
                             {order.items?.map((item, i) => (
                               <div key={i} className="flex items-center gap-2 text-sm py-1">
                                 <div className="w-8 h-10 bg-neutral-200 overflow-hidden flex-shrink-0">
-                                  <img src={item.image || ''} alt="" className="w-full h-full object-cover" />
+                                  <img loading="lazy" src={item.image || ''} alt="" className="w-full h-full object-cover" />
                                 </div>
                                 <span className="truncate">{item.title} × {item.quantity}</span>
                               </div>

@@ -23,12 +23,24 @@ export const registerUser = createAsyncThunk('auth/register', async (data, { rej
   }
 });
 
+export const sendOtp = createAsyncThunk('auth/sendOtp', async (email, { rejectWithValue }) => {
+  try {
+    const res = await API.post('/auth/send-otp', { email });
+    return res.data;
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message || 'Failed to send OTP');
+  }
+});
+
 const storedUser = localStorage.getItem('user');
 const initialState = {
   user: storedUser ? JSON.parse(storedUser) : null,
   token: localStorage.getItem('token') || null,
   loading: false,
   error: null,
+  otpLoading: false,
+  otpSent: false,
+  otpError: null,
 };
 
 const authSlice = createSlice({
@@ -42,6 +54,7 @@ const authSlice = createSlice({
       localStorage.removeItem('user');
     },
     clearError: (state) => { state.error = null; },
+    resetOtp: (state) => { state.otpSent = false; state.otpError = null; },
   },
   extraReducers: (builder) => {
     builder
@@ -50,10 +63,13 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
       .addCase(registerUser.pending, (state) => { state.loading = true; state.error = null; })
       .addCase(registerUser.fulfilled, (state, action) => { state.loading = false; state.user = action.payload.user; state.token = action.payload.token; })
-      .addCase(registerUser.rejected, (state, action) => { state.loading = false; state.error = action.payload; });
+      .addCase(registerUser.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
+      .addCase(sendOtp.pending, (state) => { state.otpLoading = true; state.otpError = null; })
+      .addCase(sendOtp.fulfilled, (state) => { state.otpLoading = false; state.otpSent = true; })
+      .addCase(sendOtp.rejected, (state, action) => { state.otpLoading = false; state.otpError = action.payload; });
   },
 });
 
-export const { logout, clearError } = authSlice.actions;
+export const { logout, clearError, resetOtp } = authSlice.actions;
 export const selectAuth = (state) => state.auth;
 export default authSlice.reducer;

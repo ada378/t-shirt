@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiHeart, FiShoppingBag, FiEye } from 'react-icons/fi';
@@ -6,6 +7,8 @@ import { addToCart } from '../../features/cart/cartSlice';
 import { toggleWishlist } from '../../features/wishlist/wishlistSlice';
 import toast from 'react-hot-toast';
 
+const FALLBACK_IMG = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="500"%3E%3Crect width="400" height="500" fill="%23f0f0f0"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".1em" fill="%23999" font-size="14"%3ENo Image%3C/text%3E%3C/svg%3E';
+
 export default function ProductCard({ product, index = 0 }) {
   const dispatch = useDispatch();
   const { user } = useSelector((s) => s.auth);
@@ -13,6 +16,7 @@ export default function ProductCard({ product, index = 0 }) {
   const isWishlisted = items?.some((id) => id === product._id || id?._id === product._id);
   const price = product.discountPrice || product.price;
   const hasDiscount = product.discountPrice > 0 && product.discountPrice < product.price;
+  const [loaded, setLoaded] = useState(false);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -34,17 +38,27 @@ export default function ProductCard({ product, index = 0 }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
+      transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
       className="group product-card bg-white"
     >
       <Link to={`/product/${product._id}`} className="block">
         <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
           <img
-            src={product.images?.[0]?.url || 'https://via.placeholder.com/400x500/f5f5f5/999?text=Product'}
+            src={product.images?.[0]?.url || FALLBACK_IMG}
             alt={product.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            onLoad={() => setLoaded(true)}
+            onError={() => setLoaded(true)}
+            className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ${loaded ? 'opacity-100' : 'opacity-0'}`}
             loading="lazy"
+            decoding="async"
           />
+
+          {!loaded && (
+            <div className="absolute inset-0 flex items-center justify-center bg-neutral-100 z-10">
+              <span className="w-7 h-7 border-2 border-neutral-300 border-t-neutral-600 rounded-full animate-spin" />
+            </div>
+          )}
+
           {hasDiscount && (
             <span className="badge">
               -{Math.round(((product.price - product.discountPrice) / product.price) * 100)}%

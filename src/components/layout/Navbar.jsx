@@ -82,7 +82,7 @@ export default function Navbar() {
 
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0 group">
-              <img src={logo} alt="Urban Monarch" className="h-11 w-11 rounded-full object-cover ring-2 ring-[#d4a853]/40 group-hover:ring-[#d4a853] transition-all" />
+              <img loading="lazy" src={logo} alt="Urban Monarch" className="h-11 w-11 rounded-full object-cover ring-2 ring-[#d4a853]/40 group-hover:ring-[#d4a853] transition-all" />
               <div className="hidden lg:block">
                 <p className="text-white font-bold text-sm leading-tight tracking-wide">URBAN</p>
                 <p className="text-[#d4a853] font-bold text-sm leading-tight tracking-widest">MONARCH</p>

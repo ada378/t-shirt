@@ -18,7 +18,7 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState({
     name: user?.name || '', phone: user?.phone || '', street: '', city: '', state: '', zip: '', country: 'India'
   });
-  const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [paymentMethod, setPaymentMethod] = useState('razorpay');
   const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
@@ -130,7 +130,7 @@ export default function CheckoutPage() {
           rzp.open();
         });
       } else {
-        const orderData = { shippingAddress: address, paymentMethod: 'cod' };
+        const orderData = { shippingAddress: address, paymentMethod };
         await dispatch(createOrder(orderData)).unwrap();
         dispatch(clearCart());
         toast.success('Order placed successfully!');
@@ -211,13 +211,7 @@ export default function CheckoutPage() {
                     desc: 'UPI, Credit/Debit Card, Net Banking — Secure & Instant',
                     icon: '💳',
                     badge: 'RECOMMENDED',
-                  },
-                  {
-                    value: 'cod',
-                    label: 'Cash on Delivery (COD)',
-                    desc: 'Pay when your order arrives',
-                    icon: '💵',
-                  },
+                  }
                 ].map((method) => (
                   <label
                     key={method.value}
@@ -267,7 +261,7 @@ export default function CheckoutPage() {
                 <div className="p-4 bg-neutral-50 rounded-sm">
                   <p className="text-sm font-medium mb-1">Payment Method:</p>
                   <p className="text-sm text-neutral-600">
-                    {paymentMethod === 'cod' ? '💵 Cash on Delivery' : '💳 Razorpay (Online Payment)'}
+                    {paymentMethod === 'razorpay' ? '💳 Razorpay (Online Payment)' : paymentMethod === 'qr' ? '🔗 UPI QR Payment' : paymentMethod}
                   </p>
                 </div>
               </div>
@@ -308,8 +302,8 @@ export default function CheckoutPage() {
             <div className="space-y-3 max-h-60 overflow-y-auto">
               {items.map((item) => (
                 <div key={item._id} className="flex gap-3">
-                  <div className="w-14 h-16 bg-neutral-100 flex-shrink-0 overflow-hidden">
-                    <img src={item.image || ''} alt={item.title} className="w-full h-full object-cover" />
+                    <div className="w-14 h-16 bg-neutral-100 flex-shrink-0 overflow-hidden">
+                    <img loading="lazy" src={item.image || ''} alt={item.title} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-medium truncate">{item.title}</p>

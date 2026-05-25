@@ -6,6 +6,7 @@ import { fetchFeaturedProducts } from '../features/products/productSlice';
 import HeroSlider from '../components/home/HeroSlider';
 import ProductCard from '../components/product/ProductCard';
 import SkeletonCard from '../components/common/SkeletonCard';
+import { useInView } from '../hooks/useInView';
 import { FiArrowRight, FiStar, FiTruck, FiShield, FiRefreshCw, FiHeadphones, FiChevronRight } from 'react-icons/fi';
 
 const categories = [
@@ -80,6 +81,10 @@ export default function HomePage() {
   const dispatch = useDispatch();
   const { featured, bestSellers, newArrivals, loading } = useSelector((s) => s.products);
 
+  // Lazy-load below-fold product sections
+  const [newArrivalsRef, newArrivalsInView] = useInView({ rootMargin: '300px' });
+  const [bestSellersRef, bestSellersInView] = useInView({ rootMargin: '300px' });
+
   useEffect(() => {
     dispatch(fetchFeaturedProducts());
     window.scrollTo(0, 0);
@@ -107,12 +112,16 @@ export default function HomePage() {
             <div className="flex gap-3 overflow-x-auto pb-2">
               {featured.slice(0, 3).map((product) => (
                 <Link key={product._id} to={`/product/${product._id}`} className="min-w-[210px] rounded-3xl overflow-hidden border border-white/10 bg-[#111] shadow-lg">
-                  <div className="aspect-[4/5] overflow-hidden bg-neutral-900">
+                  <div className="aspect-[4/5] overflow-hidden bg-neutral-900 relative">
                     <img
+                      loading="lazy"
                       src={product.images?.[0]?.url || 'https://via.placeholder.com/400x500'}
                       alt={product.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover relative z-10"
                     />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="w-6 h-6 border-2 border-neutral-600 border-t-neutral-300 rounded-full animate-spin" />
+                    </div>
                   </div>
                   <div className="p-3">
                     <p className="text-[9px] uppercase tracking-[0.3em] text-[#d4a853]">{product.category}</p>
@@ -137,42 +146,30 @@ export default function HomePage() {
         </motion.div>
       </div>
 
-      {/* PREMIUM T-SHIRTS */}
-      {(loading || featured?.length > 0) && (
-        <section className="py-10 md:py-20" style={{ background: '#0d0d0d' }}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader label="Premium Picks" title="Premium T-Shirts" link="/products" />
-            {loading ? <ProductSkeleton /> : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-                {featured?.slice(0, 8).map((p, i) => <ProductCard key={p._id} product={p} index={i} />)}
-              </div>
-            )}
-          </div>
-        </section>
-      )}
-
       {/* NEW ARRIVALS */}
-      {(loading || newArrivals?.length > 0) && (
-        <section className="py-10 md:py-20" style={{ background: '#0d0d0d' }}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader label="New Arrivals" title="Fresh Drops" link="/products?sort=newest" />
-            {loading ? <ProductSkeleton /> : (
+      <section className="py-10 md:py-20" style={{ background: '#0d0d0d' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader label="New Arrivals" title="Fresh Drops" link="/products?sort=newest" />
+          <div ref={newArrivalsRef} />
+          {loading ? <ProductSkeleton /> : (
+            newArrivals?.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-                {newArrivals?.slice(0, 8).map((p, i) => <ProductCard key={p._id} product={p} index={i} />)}
+                {newArrivalsInView && newArrivals?.slice(0, 8).map((p, i) => <ProductCard key={p._id} product={p} index={i} />)}
+                {!newArrivalsInView && newArrivals?.slice(0, 8).map((_, i) => <SkeletonCard key={i} />)}
               </div>
-            )}
-            <div className="text-center mt-6 md:mt-10">
-              <Link to="/products?sort=newest"
-                className="inline-flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-[0.15em] px-6 md:px-10 py-3 md:py-4 transition-all duration-300"
-                style={{ border: '1px solid #d4a853', color: '#d4a853' }}
-                onMouseEnter={e => { e.currentTarget.style.background = '#d4a853'; e.currentTarget.style.color = '#000'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#d4a853'; }}>
-                View All <FiArrowRight />
-              </Link>
-            </div>
+            ) : null
+          )}
+          <div className="text-center mt-6 md:mt-10">
+            <Link to="/products?sort=newest"
+              className="inline-flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-[0.15em] px-6 md:px-10 py-3 md:py-4 transition-all duration-300"
+              style={{ border: '1px solid #d4a853', color: '#d4a853' }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#d4a853'; e.currentTarget.style.color = '#000'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#d4a853'; }}>
+              View All <FiArrowRight />
+            </Link>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* FEATURES */}
       <section style={{ background: '#111', borderBottom: '1px solid #1e1e1e' }}>
@@ -206,7 +203,7 @@ export default function HomePage() {
             {categories.map((cat, i) => (
               <motion.div key={cat.slug} {...fadeUp} transition={{ delay: i * 0.08 }}>
                 <Link to={`/products/${cat.slug}`} className="group relative block overflow-hidden" style={{ aspectRatio: '4/3' }}>
-                  <img src={cat.image} alt={cat.name} className="w-full h-full object-cover"
+                  <img loading="lazy" src={cat.image} alt={cat.name} className="w-full h-full object-cover"
                     style={{ transition: 'transform 0.7s ease' }}
                     onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.06)'}
                     onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
@@ -254,7 +251,7 @@ export default function HomePage() {
               </div>
             </motion.div>
             <motion.div {...fadeUp} transition={{ delay: 0.15 }} className="hidden md:block relative overflow-hidden" style={{ minHeight: 380 }}>
-              <img src="https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=900&q=85" alt="Sale" className="absolute inset-0 w-full h-full object-cover" />
+              <img loading="lazy" src="https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=900&q=85" alt="Sale" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #0a0a0a 0%, transparent 35%)' }} />
               <div className="absolute top-6 right-6 w-20 h-20 rounded-full flex flex-col items-center justify-center" style={{ background: '#d4a853' }}>
                 <span className="text-black text-[9px] font-bold uppercase">Up to</span>
@@ -267,18 +264,20 @@ export default function HomePage() {
       </section>
 
       {/* BEST SELLERS */}
-      {(loading || bestSellers?.length > 0) && (
-        <section className="py-10 md:py-20" style={{ background: '#111' }}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader label="Best Sellers" title="Most Popular" link="/products?sort=bestseller" />
-            {loading ? <ProductSkeleton /> : (
+      <section className="py-10 md:py-20" style={{ background: '#111' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader label="Best Sellers" title="Most Popular" link="/products?sort=bestseller" />
+          <div ref={bestSellersRef} />
+          {loading ? <ProductSkeleton /> : (
+            bestSellers?.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-                {bestSellers?.slice(0, 8).map((p, i) => <ProductCard key={p._id} product={p} index={i} />)}
+                {bestSellersInView && bestSellers?.slice(0, 8).map((p, i) => <ProductCard key={p._id} product={p} index={i} />)}
+                {!bestSellersInView && bestSellers?.slice(0, 8).map((_, i) => <SkeletonCard key={i} />)}
               </div>
-            )}
-          </div>
-        </section>
-      )}
+            ) : null
+          )}
+        </div>
+      </section>
 
       {/* STATS */}
       <section className="py-8 md:py-14" style={{ background: '#0a0a0a', borderTop: '1px solid #1a1a1a', borderBottom: '1px solid #1a1a1a' }}>

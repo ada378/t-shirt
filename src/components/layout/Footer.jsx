@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
-            <img src={logo} alt="Urban Monarch" className="h-14 w-14 rounded-full object-cover mb-4" />
+            <img loading="lazy" src={logo} alt="Urban Monarch" className="h-14 w-14 rounded-full object-cover mb-4" />
             <p className="text-sm leading-relaxed text-neutral-400">Premium fashion for those who dare to stand out. Quality apparel crafted with passion.</p>
             <div className="flex gap-3 mt-6">
               <a href="#" className="w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center hover:bg-accent hover:text-black transition-all"><FiInstagram /></a>

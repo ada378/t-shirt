@@ -103,7 +103,7 @@ export default function OrdersPage() {
                   {order.items?.map((item, j) => (
                     <div key={j} className="flex items-center gap-3">
                       <div className="w-12 h-14 bg-neutral-800 overflow-hidden flex-shrink-0 rounded-sm">
-                        <img src={item.image || ''} alt={item.title} className="w-full h-full object-cover" />
+                        <img loading="lazy" src={item.image || ''} alt={item.title} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm truncate text-neutral-200">{item.title}</p>

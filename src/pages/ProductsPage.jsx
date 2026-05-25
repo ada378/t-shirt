@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { fetchProducts } from '../features/products/productSlice';
 import ProductCard from '../components/product/ProductCard';
 import SkeletonCard from '../components/common/SkeletonCard';
+import { useInView } from '../hooks/useInView';
 import { FiFilter, FiGrid, FiSliders, FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const categories = [
@@ -25,6 +26,9 @@ export default function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const { products, pagination, loading } = useSelector((s) => s.products);
+
+  // Lazy-load the products grid section when it enters viewport
+  const [gridRef, gridInView] = useInView({ rootMargin: '400px', triggerOnce: false });
 
   const [filters, setFilters] = useState({
     category: category || searchParams.get('category') || '',
@@ -140,6 +144,8 @@ export default function ProductsPage() {
         </motion.aside>
 
         <div className="flex-1">
+          {/* Sentinel div — grid renders when this enters viewport */}
+          <div ref={gridRef} />
           {loading ? (
             <div className="product-grid">
               {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}

@@ -8,6 +8,7 @@ import ProductCard from '../components/product/ProductCard';
 import SkeletonCard from '../components/common/SkeletonCard';
 import { useInView } from '../hooks/useInView';
 import { FiArrowRight, FiStar, FiTruck, FiShield, FiRefreshCw, FiHeadphones, FiChevronRight } from 'react-icons/fi';
+import { getProductImage, FALLBACK_IMG } from '../utils/imageUrl';
 
 const categories = [
   { name: 'T-Shirts', slug: 't-shirts', image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=85', count: '48+ Designs', desc: 'Premium cotton tees' },
@@ -115,7 +116,7 @@ export default function HomePage() {
                   <div className="aspect-[4/5] overflow-hidden bg-neutral-900 relative">
                     <img
                       loading="lazy"
-                      src={product.images?.[0]?.url || 'https://via.placeholder.com/400x500'}
+                      src={getProductImage(product) || FALLBACK_IMG}
                       alt={product.title}
                       className="w-full h-full object-cover relative z-10"
                     />

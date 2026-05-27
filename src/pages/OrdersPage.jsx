@@ -6,6 +6,7 @@ import { fetchMyOrders, cancelOrder } from '../features/orders/orderSlice';
 import Loader from '../components/common/Loader';
 import { FiPackage, FiCheckCircle, FiClock, FiXCircle } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+import { getImageUrl, FALLBACK_IMG } from '../utils/imageUrl';
 
 const orderStatusStyles = {
   pending:    { bg: '#fff8e6', color: '#92600a', label: 'Pending' },
@@ -103,7 +104,7 @@ export default function OrdersPage() {
                   {order.items?.map((item, j) => (
                     <div key={j} className="flex items-center gap-3">
                       <div className="w-12 h-14 bg-neutral-800 overflow-hidden flex-shrink-0 rounded-sm">
-                        <img loading="lazy" src={item.image || ''} alt={item.title} className="w-full h-full object-cover" />
+                        <img loading="lazy" src={getImageUrl(item.image) || FALLBACK_IMG} alt={item.title} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm truncate text-neutral-200">{item.title}</p>

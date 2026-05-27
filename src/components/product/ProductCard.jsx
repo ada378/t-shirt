@@ -7,7 +7,7 @@ import { addToCart } from '../../features/cart/cartSlice';
 import { toggleWishlist } from '../../features/wishlist/wishlistSlice';
 import toast from 'react-hot-toast';
 
-const FALLBACK_IMG = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="500"%3E%3Crect width="400" height="500" fill="%23f0f0f0"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".1em" fill="%23999" font-size="14"%3ENo Image%3C/text%3E%3C/svg%3E';
+import { getProductImage, FALLBACK_IMG } from '../../utils/imageUrl';
 
 export default function ProductCard({ product, index = 0 }) {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ export default function ProductCard({ product, index = 0 }) {
       <Link to={`/product/${product._id}`} className="block">
         <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
           <img
-            src={product.images?.[0]?.url || FALLBACK_IMG}
+            src={getProductImage(product) || FALLBACK_IMG}
             alt={product.title}
             onLoad={() => setLoaded(true)}
             onError={() => setLoaded(true)}

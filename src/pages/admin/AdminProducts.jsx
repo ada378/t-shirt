@@ -5,6 +5,7 @@ import { createProduct, updateProductAdmin, deleteProductAdmin, bulkCreateProduc
 import toast from 'react-hot-toast';
 import API from '../../services/api';
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiImage, FiUpload, FiFileText } from 'react-icons/fi';
+import { getProductImage, FALLBACK_IMG } from '../../utils/imageUrl';
 
 const categories = ['t-shirts', 'hoodies', 'jeans'];
 const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
@@ -188,7 +189,7 @@ export default function AdminProducts() {
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-12 bg-neutral-100 overflow-hidden flex-shrink-0">
-                        <img loading="lazy" src={p.images?.[0]?.url || ''} alt="" className="w-full h-full object-cover" />
+                        <img loading="lazy" src={getProductImage(p) || FALLBACK_IMG} alt="" className="w-full h-full object-cover" />
                       </div>
                       <span className="font-medium truncate max-w-[200px]">{p.title}</span>
                     </div>

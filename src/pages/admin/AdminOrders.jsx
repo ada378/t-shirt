@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { fetchAdminOrders, updateOrderStatus, refundOrder } from '../../features/admin/adminSlice';
 import toast from 'react-hot-toast';
 import { FiChevronDown, FiSearch, FiCheckCircle, FiTruck, FiMapPin, FiPhone, FiMail, FiUser, FiShoppingBag, FiRotateCcw } from 'react-icons/fi';
+import { getImageUrl, FALLBACK_IMG } from '../../utils/imageUrl';
 
 const statuses = ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled'];
 
@@ -108,7 +109,7 @@ export default function AdminOrders() {
                             {order.items?.map((item, i) => (
                               <div key={i} className="flex items-center gap-2 text-sm py-1">
                                 <div className="w-8 h-10 bg-neutral-200 overflow-hidden flex-shrink-0">
-                                  <img loading="lazy" src={item.image || ''} alt="" className="w-full h-full object-cover" />
+                                  <img loading="lazy" src={getImageUrl(item.image) || FALLBACK_IMG} alt="" className="w-full h-full object-cover" />
                                 </div>
                                 <span className="truncate">{item.title} × {item.quantity}</span>
                               </div>

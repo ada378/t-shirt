@@ -8,6 +8,7 @@ import { toggleWishlist } from '../features/wishlist/wishlistSlice';
 import Loader from '../components/common/Loader';
 import { FiHeart, FiShare2, FiMinus, FiPlus, FiTruck, FiShield, FiRefreshCw, FiStar } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+import { getImageUrl, FALLBACK_IMG } from '../utils/imageUrl';
 
 
 export default function ProductDetailsPage() {
@@ -43,7 +44,7 @@ export default function ProductDetailsPage() {
   const hasDiscount = product.discountPrice > 0 && product.discountPrice < product.price;
   const isWishlisted = wishlistItems?.some((id) => id === product._id || id?._id === product._id);
   const inStock = product.stock > 0;
-  const validImages = product.images?.filter(i => i?.url) || [];
+  const validImages = product.images?.filter(i => i?.url)?.map(i => ({ ...i, url: getImageUrl(i.url) })) || [];
 
   const handleAddToCart = () => {
     if (!user) return toast.error('Please login first');
@@ -82,7 +83,7 @@ export default function ProductDetailsPage() {
               </div>
             )}
             <img
-              src={validImages[activeImg]?.url || 'https://via.placeholder.com/600x750/f5f5f5/999?text=Product'}
+              src={validImages[activeImg]?.url || FALLBACK_IMG}
               alt={product.title}
               onLoad={() => setMainImgLoaded(true)}
               onError={() => setMainImgLoaded(true)}

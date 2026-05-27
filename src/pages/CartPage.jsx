@@ -6,6 +6,7 @@ import { fetchCart, updateCartItem, removeFromCart, applyCoupon, clearCart } fro
 import Loader from '../components/common/Loader';
 import { FiMinus, FiPlus, FiTrash2, FiArrowLeft, FiShoppingBag } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+import { getCartItemImage, FALLBACK_IMG } from '../utils/imageUrl';
 
 export default function CartPage() {
   const dispatch = useDispatch();
@@ -76,7 +77,7 @@ export default function CartPage() {
               className="flex gap-4 p-4 border border-neutral-100 rounded-sm"
             >
               <Link to={`/product/${item.product?._id || item.product}`} className="w-24 h-28 flex-shrink-0 bg-neutral-100 overflow-hidden">
-                <img loading="lazy" src={item.image || 'https://via.placeholder.com/100'} alt={item.title} className="w-full h-full object-cover" />
+                <img loading="lazy" src={getCartItemImage(item) || FALLBACK_IMG} alt={item.title} className="w-full h-full object-cover" />
               </Link>
               <div className="flex-1 min-w-0">
                 <Link to={`/product/${item.product?._id || item.product}`} className="text-sm font-medium hover:underline block truncate">{item.title}</Link>

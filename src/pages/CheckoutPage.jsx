@@ -6,6 +6,7 @@ import { createOrder } from '../features/orders/orderSlice';
 import { clearCart, fetchCart } from '../features/cart/cartSlice';
 import toast from 'react-hot-toast';
 import API from '../services/api';
+import { getImageUrl, FALLBACK_IMG } from '../utils/imageUrl';
 
 export default function CheckoutPage() {
   const dispatch = useDispatch();
@@ -303,7 +304,7 @@ export default function CheckoutPage() {
               {items.map((item) => (
                 <div key={item._id} className="flex gap-3">
                     <div className="w-14 h-16 bg-neutral-100 flex-shrink-0 overflow-hidden">
-                    <img loading="lazy" src={item.image || ''} alt={item.title} className="w-full h-full object-cover" />
+                    <img loading="lazy" src={getImageUrl(item.image) || FALLBACK_IMG} alt={item.title} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-medium truncate">{item.title}</p>
